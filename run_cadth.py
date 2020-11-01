@@ -1,4 +1,4 @@
-from func_canada import *
+from func_pcpcanada import *
 
 # Scraps table from BASE_URL
 soup = scrapBaseUrl(BASE_URL + PATH)
