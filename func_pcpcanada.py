@@ -1,5 +1,3 @@
-from func import *
-
 SEPARATOR = '|'
 BASE_URL = "https://www.pcpacanada.ca"
 PATH = "/negotiations"

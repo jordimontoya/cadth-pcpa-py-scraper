@@ -1,24 +1,13 @@
-from func import *
-
 SEPARATOR = "|"
-BASE_URL = "https://www.cadth.ca"
-PATH = "/reimbursement-review-reports"
-OUTPUT_FILE = "output/cadth.csv"
-TABLE_CLASS = "reimbursement_review"
-TABLE_PRODUCT_CLASS = "pcodr_table"
-THEAD_PRODUCT = ["Strength","Tumour Type","Funding Request","Pre Noc Submission","NOC Date","Manufacturer","Sponsor","Submission Deemed Complete","Submission Type","Prioritization Requested","Stakeholder Input Deadline","Check-point meeting","pERC Meeting","Initial Recommendation Issued","Feedback Deadline","pERC Reconsideration Meeting","Notification to Implement Issued","Clarification"]
 
-# Returns excel columns' head as a string
-def getExcelHead(table, arr_head):
-    thead = [e.text for e in table.find("thead").find_all("th")]
-    return SEPARATOR.join(thead) + SEPARATOR + 'url' + SEPARATOR + SEPARATOR.join(arr_head) + '\n'
+
 
 # Returns excel row as a string
 def getExcelRow(tr):
     table_row = SEPARATOR.join( [e.get_text(separator=" ").strip() for e in tr.find_all("td")] )
     print(table_row + '\n')
 
-    url_product = BASE_URL + '' + tr.td.a['href']
+    url_product = BASE_URL_CADTH + '' + tr.td.a['href']
     soup = scrapBaseUrl(url_product)
     product_detail = getProductDetail(soup)
 
