@@ -1,5 +1,6 @@
 import requests
 import xlsxwriter
+import xlwings as xw
 import cProfile
 import os
 from bs4 import BeautifulSoup
@@ -170,6 +171,25 @@ def run():
     
     # Close csv file
     workbook.close()
+
+def run_from_xlsb():
+    run()
+
+    # Current workbook and sheets
+    wb = xw.Book.caller()
+    sheetCADTH = wb.sheets["CADTH"]
+    sheetPCPA = wb.sheets["pCPA"]
+
+    # file and sheets to copy
+    source_wb = xw.Book(OUTPUT_FILE)
+    source_sheetCADTH = source_wb.sheets["CADTH"]
+    source_sheetPCPA = source_wb.sheets["pCPA"]
+
+    # copy needed source_sheets to the current sheets
+    source_sheetCADTH.api.Copy(Before=sheetCADTH.api)
+    source_sheetPCPA.api.Copy(Before=sheetPCPA.api)
+
+    #wb.save("spravoc" + "/" + "spravoc_new.xlsx")
 
 if __name__ == "__main__":
     run()
