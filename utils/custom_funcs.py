@@ -1,4 +1,4 @@
-import funcs
+import utils.funcs as f
 
 OUTPUT_FILE = "output/CADTH-pCPA-data-import.xlsx"
 BASE_URL_CADTH = "https://www.cadth.ca"
@@ -64,21 +64,21 @@ def getExcelRow_cadth(tr):
     url_product = BASE_URL_CADTH + tr.td.a['href']
     table_row[0] = '=HYPERLINK("'+url_product+'", "'+table_row[0]+'")'
 
-    soup = funcs.scrapBaseUrl(url_product)
+    soup = f.scrapBaseUrl(url_product)
     product_row = getProductDetail_cadth(soup)
 
     excel_row = table_row + product_row
 
     # Parse dates
-    excel_row[5] = funcs.dateParser_cadth(excel_row[5])
-    excel_row[6] = funcs.dateParser_cadth(excel_row[6])
-    excel_row[12] = funcs.dateParser_cadth(excel_row[12])
-    excel_row[15] = funcs.dateParser_cadth(excel_row[15])
-    excel_row[19] = funcs.dateParser_cadth(excel_row[19])
-    excel_row[20] = funcs.dateParser_cadth(excel_row[20])
-    excel_row[22] = funcs.dateParser_cadth(excel_row[22])
-    excel_row[23] = funcs.dateParser_cadth(excel_row[23])
-    excel_row[24] = funcs.dateParser_cadth(excel_row[24])
+    excel_row[5] = f.dateParser_cadth(excel_row[5])
+    excel_row[6] = f.dateParser_cadth(excel_row[6])
+    excel_row[12] = f.dateParser_cadth(excel_row[12])
+    excel_row[15] = f.dateParser_cadth(excel_row[15])
+    excel_row[19] = f.dateParser_cadth(excel_row[19])
+    excel_row[20] = f.dateParser_cadth(excel_row[20])
+    excel_row[22] = f.dateParser_cadth(excel_row[22])
+    excel_row[23] = f.dateParser_cadth(excel_row[23])
+    excel_row[24] = f.dateParser_cadth(excel_row[24])
 
     return excel_row
 
@@ -101,13 +101,13 @@ def getExcelRow_pcpa(tr):
     url_product = BASE_URL_PCPA + tr.td.a['href']
     table_row[0] = '=HYPERLINK("'+url_product+'", "'+table_row[0]+'")'
 
-    soup = funcs.scrapBaseUrl(url_product)
+    soup = f.scrapBaseUrl(url_product)
     product_row = getProductDetail_pcpa(soup)
 
     excel_row = table_row + product_row
 
     # Parse dates
-    excel_row[7] = funcs.dateParser_pcpa(excel_row[7])
-    excel_row[8] = funcs.dateParser_pcpa(excel_row[8])
+    excel_row[7] = f.dateParser_pcpa(excel_row[7])
+    excel_row[8] = f.dateParser_pcpa(excel_row[8])
 
     return excel_row

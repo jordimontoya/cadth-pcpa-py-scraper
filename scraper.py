@@ -1,7 +1,7 @@
 import xlsxwriter
 import xlwings as xw
-import funcs as f
-import custom_funcs as cf
+import utils.funcs as f
+import utils.custom_funcs as cf
 import cProfile
 
 workbook = None
