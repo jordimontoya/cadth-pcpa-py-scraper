@@ -1,134 +1,41 @@
-import requests
 import xlsxwriter
 import xlwings as xw
+import funcs as f
+import custom_funcs as cf
 import cProfile
-import os
-from bs4 import BeautifulSoup
-from datetime import datetime
-from multiprocessing.dummy import Pool  # This is a thread-based Pool
-from multiprocessing import cpu_count
 
-OUTPUT_FILE = "output/CADTH-pCPA-data-import.xlsx"
-BASE_URL_CADTH = "https://www.cadth.ca"
-PATH_CADTH = "/reimbursement-review-reports"
-TABLE_CLASS_CADTH = "reimbursement_review"
-TABLE_PRODUCT_CLASS_CADTH = "pcodr_table"
-THEAD_PRODUCT_CADTH = ["Strength","Tumour Type","Funding Request","Pre Noc Submission","NOC Date","Manufacturer","Sponsor","Submission Deemed Complete","Submission Type","Prioritization Requested","Stakeholder Input Deadline","Check-point meeting","pERC Meeting","Initial Recommendation Issued","Feedback Deadline","pERC Reconsideration Meeting","Notification to Implement Issued","Clarification"]
+workbook = None
+app = None
 
-BASE_URL_PCPA = "https://www.pcpacanada.ca"
-PATH_PCPA = "/negotiations"
-TABLE_CLASS_PCPA = "datatable"
-THEAD_PRODUCT_PCPA = []
+def run_scraper():
+    # Create a workbook and declare specific formats.
+    wb = xlsxwriter.Workbook(f.getAbsolutePath(cf.OUTPUT_FILE), {'constant_memory': True})
+    bold = wb.add_format({'bold': True})
+    underline = wb.get_default_url_format()
+    date = wb.add_format({'num_format': 'dd-mmm-yyyy'})
 
-session = requests.Session()
-session.trust_env = False
+    # PCPA - Create worksheet and set link format and date format
+    worksheetPCPA = wb.add_worksheet('pCPA')
+    worksheetPCPA.set_column('A:A', None, underline)
+    worksheetPCPA.set_column('I:I', None, date)
+    worksheetPCPA.set_column('J:J', None, date)
 
-def getAbsolutePath(relative_path):
-    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-    abs_path = os.path.join(script_dir, relative_path)
-    os.makedirs(os.path.dirname(abs_path), exist_ok=True)
-    return abs_path
+    # PCPA - Scraps table
+    soup = f.scrapBaseUrl(cf.BASE_URL_PCPA + cf.PATH_PCPA)
+    table_pcpa = soup.find("table", id=cf.TABLE_CLASS_PCPA)
 
-def scrapBaseUrl(url):
-    headers = {"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"}
-    r = session.get(url, headers=headers)
-    r.raw.chunked = True
-    r.encoding = 'utf-8'
-    return BeautifulSoup(r.text, 'lxml')
+    # PCPA - Builds and writes excel's head
+    excel_head = f.getExcelHead(table_pcpa, cf.THEAD_PRODUCT_PCPA)
+    worksheetPCPA.write_row(0, 0, excel_head, bold)
 
-def dateParser(str):
-    if str and str != 'N/A':
-        return datetime.strptime(str, '%B %d, %Y')
-    return str
-
-# Returns excel columns' head as array
-def getExcelHead(table, arr_head):
-    thead = [e.text for e in table.find("thead").find_all("th")]
-    return thead + arr_head
-
-# Returns excel row as a string
-def getExcelRow(tr):
-    table_row = [e.get_text(separator=" ").strip() for e in tr.find_all("td")]
-
-    # product url
-    url_product = BASE_URL_CADTH + '' + tr.td.a['href']
-    table_row[0] = '=HYPERLINK("'+url_product+'", "'+table_row[0]+'")'
-
-    soup = scrapBaseUrl(url_product)
-    product_row = getProductDetail(soup)
-
-    excel_row = table_row + product_row
-
-    # Parse dates
-    excel_row[5] = dateParser(excel_row[5])
-    excel_row[6] = dateParser(excel_row[6])
-    excel_row[12] = dateParser(excel_row[12])
-    excel_row[15] = dateParser(excel_row[15])
-    excel_row[19] = dateParser(excel_row[19])
-    excel_row[20] = dateParser(excel_row[20])
-    excel_row[22] = dateParser(excel_row[22])
-    excel_row[23] = dateParser(excel_row[23])
-    excel_row[24] = dateParser(excel_row[24])
-
-    return excel_row
-
-# Returns the detail row as a string
-def getProductDetail(soup):
-    product_row = []
-
-    #1st detected format (ex: https://www.cadth.ca/xalkori-resubmission-first-line-advanced-nsclc-details)
-    #2nd detected format (ex: https://www.cadth.ca/ibrutinib-imbruvica-leukemia)
-    if soup.find("table", class_=TABLE_PRODUCT_CLASS_CADTH):
-        product_tr_list = soup.find("table", class_=TABLE_PRODUCT_CLASS_CADTH)
-        product_row = [parseProductTable(element, product_tr_list) for element in THEAD_PRODUCT_CADTH]
-
-    #3rd detected format (ex: https://www.cadth.ca/aripiprazole-25)    
-    elif soup.find("div", class_="publish-date"):
-        product_row = [cleanProductElement(element, soup) for element in THEAD_PRODUCT_CADTH]
-
-    else:
-        product_row.append("Unable to fetch data, new web format")
-
-    return product_row
-
-def parseProductTable(element, product_tr_list):
-    if product_tr_list.find("th", string=element):
-        product_td = product_tr_list.find("th", string=element).find_next_sibling("td").get_text(separator=" ").strip()
-        product_td = product_td.replace('\n', ' ').replace('\r', '')
-        return product_td
-
-    return ""
-
-def cleanProductElement(element, soup):
-    if element == "Manufacturer":
-        #clean manufacturer value
-        manufacturer = soup.find("p", class_="field_manufacturer")
-        manufacturer.strong.decompose()
-        return manufacturer.get_text(separator=" ").strip()
-
-    elif element == "Submission Type" and soup.find("p", class_="field_submission_type"):
-        #clean submission type value
-        submission_type = soup.find("p", class_="field_submission_type")
-        submission_type.strong.decompose()
-        return submission_type.get_text(separator=" ").strip()
-
-    return ""
-
-def run():
-    # Create a workbook and add a worksheet.
-    workbook = xlsxwriter.Workbook(getAbsolutePath(OUTPUT_FILE), {'constant_memory': True})
-    worksheetCADTH = workbook.add_worksheet('CADTH')
-    worksheetPCPA = workbook.add_worksheet('pCPA')
-
-    # Declare specific formats
-    bold = workbook.add_format({'bold': True})
-    underline = workbook.get_default_url_format()
-    date = workbook.add_format({'num_format': 'dd-mmm-yyyy'})
-
-    # CADTH - Set link format
+    # PCPA - Builds and writes data to excel
+    trs = table_pcpa.find('tbody').find_all("tr")
+    #trs = trs[:30]
+    f.excel_writer(cf.getExcelRow_pcpa, worksheetPCPA, trs)
+    
+    # CADTH - Create worksheet and set link format and date format
+    worksheetCADTH = wb.add_worksheet('CADTH')
     worksheetCADTH.set_column('A:A', None, underline)
-
-    # CADTH - Set date format
     worksheetCADTH.set_column('F:F', None, date)
     worksheetCADTH.set_column('G:G', None, date)
     worksheetCADTH.set_column('M:M', None, date)
@@ -140,56 +47,76 @@ def run():
     worksheetCADTH.set_column('Y:Y', None, date)
 
     # CADTH - Scraps table
-    soup = scrapBaseUrl(BASE_URL_CADTH + PATH_CADTH)
-    table_cadth = soup.find("table", class_=TABLE_CLASS_CADTH)
-
-    # PCPA - Scraps table
-    soup = scrapBaseUrl(BASE_URL_PCPA + PATH_PCPA)
-    table_pcpa = soup.find("table", id=TABLE_CLASS_PCPA)
+    soup = f.scrapBaseUrl(cf.BASE_URL_CADTH + cf.PATH_CADTH)
+    table_cadth = soup.find("table", class_=cf.TABLE_CLASS_CADTH)
 
     # CADTH - Builds and writes excel's head
-    excel_head = getExcelHead(table_cadth, THEAD_PRODUCT_CADTH)
+    excel_head = f.getExcelHead(table_cadth, cf.THEAD_PRODUCT_CADTH)
     worksheetCADTH.write_row(0, 0, excel_head, bold)
 
-    # PCPA - Builds and writes excel's head
-    excel_head = getExcelHead(table_pcpa, THEAD_PRODUCT_PCPA)
-    worksheetPCPA.write_row(0, 0, excel_head, bold)
-
+    # CADTH - Builds and writes data to excel
     trs = table_cadth.find_all("tr")
-    FILE_LINES = len(trs)
-    NUM_WORKERS = cpu_count() * 2
-    chunksize = FILE_LINES // NUM_WORKERS * 4   # Try to get a good chunksize. You're probably going to have to tweak this, though. Try smaller and lower values and see how performance changes.
-    pool = Pool(NUM_WORKERS)
+    #trs = trs[:30]
+    f.excel_writer(cf.getExcelRow_cadth, worksheetCADTH, trs)
 
-    row = 1
-    result_iter = pool.imap(getExcelRow, trs)
-    for result in result_iter:  # lazily iterate over results.
-        print(result[0])
-        worksheetCADTH.write_row(row, 0, result)
-        row += 1
-        print(row)
-    
     # Close csv file
-    workbook.close()
+    wb.close()
 
-def run_from_xlsb():
-    run()
-
-    # Current workbook and sheets
-    wb = xw.Book.caller()
-    sheetCADTH = wb.sheets["CADTH"]
-    sheetPCPA = wb.sheets["pCPA"]
+def run():
+    run_scraper()
 
     # file and sheets to copy
-    source_wb = xw.Book(OUTPUT_FILE)
-    source_sheetCADTH = source_wb.sheets["CADTH"]
-    source_sheetPCPA = source_wb.sheets["pCPA"]
+    source_wb = xw.books.open(r''+cf.OUTPUT_FILE)
 
     # copy needed source_sheets to the current sheets
-    source_sheetCADTH.api.Copy(Before=sheetCADTH.api)
-    source_sheetPCPA.api.Copy(Before=sheetPCPA.api)
+    f.deleteSheet(workbook, 'CADTH')
+    f.deleteSheet(workbook, 'pCPA')
 
-    #wb.save("spravoc" + "/" + "spravoc_new.xlsx")
+    sht1 = source_wb.sheets["CADTH"]
+    sht2 = source_wb.sheets["pCPA"]
+    print(source_wb.sheets)
+    
+    workbook.sheets.add("Temp", after=1)
+    print(workbook.sheets)
+    sht1.api.Copy(Before=workbook.sheets['Temp'].api)
+
+    #source_wb.sheets['CADTH'].api.Copy(Before=workbook.sheets[1].api)
+    #source_wb.sheets['pCPA'].api.Copy(Before=workbook.sheets[1].api)
+    
+    
+
+    source_wb.close()
+    workbook.save()
+    #os.remove(getAbsolutePath(OUTPUT_FILE_TMP))
+
+def run_from_exe():
+    global workbook
+    # Open or create a workbook.
+    
+    #app = xw.App(visible=True)
+
+    #try:
+        #workbook = app.books(getAbsolutePath(OUTPUT_FILE))
+    #except:
+        #print("gola")
+        #workbook_create = xlsxwriter.Workbook(r''+getAbsolutePath(OUTPUT_FILE), {'constant_memory': True})
+        #workbook_create.add_worksheet('sheet1')
+        #workbook_create.add_worksheet('CADTH')
+        #workbook_create.add_worksheet('pCPA')
+        #workbook_create.close()
+        #workbook = app.books(r''+getAbsolutePath(OUTPUT_FILE))
+    #workbook.save()
+    run_scraper()
+
+    #workbook.close()
+    #app.quit()
+
+def run_from_xlsb():
+    global workbook
+
+    # Current workbook and sheets
+    workbook = xw.Book.caller()
+    run()
 
 if __name__ == "__main__":
-    run()
+    run_from_exe()
