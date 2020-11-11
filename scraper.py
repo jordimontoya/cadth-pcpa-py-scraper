@@ -9,7 +9,7 @@ app = None
 
 def run_scraper():
     # Create a workbook and declare specific formats.
-    wb = xlsxwriter.Workbook(f.getAbsolutePath(cf.OUTPUT_FILE), {'constant_memory': True})
+    wb = xlsxwriter.Workbook(f.getAbsolutePath(cf.OUTPUT_FILE_TMP), {'constant_memory': True})
     bold = wb.add_format({'bold': True})
     underline = wb.get_default_url_format()
     date = wb.add_format({'num_format': 'dd-mmm-yyyy'})
@@ -17,8 +17,8 @@ def run_scraper():
     # PCPA - Create worksheet and set link format and date format
     worksheetPCPA = wb.add_worksheet('pCPA')
     worksheetPCPA.set_column('A:A', None, underline)
+    worksheetPCPA.set_column('H:H', None, date)
     worksheetPCPA.set_column('I:I', None, date)
-    worksheetPCPA.set_column('J:J', None, date)
 
     # PCPA - Scraps table
     soup = f.scrapBaseUrl(cf.BASE_URL_PCPA + cf.PATH_PCPA)
@@ -30,7 +30,7 @@ def run_scraper():
 
     # PCPA - Builds and writes data to excel
     trs = table_pcpa.find('tbody').find_all("tr")
-    #trs = trs[:30]
+    #trs = trs[:10]
     f.excel_writer(cf.getExcelRow_pcpa, worksheetPCPA, trs)
     
     # CADTH - Create worksheet and set link format and date format
@@ -40,8 +40,10 @@ def run_scraper():
     worksheetCADTH.set_column('G:G', None, date)
     worksheetCADTH.set_column('M:M', None, date)
     worksheetCADTH.set_column('P:P', None, date)
+    worksheetCADTH.set_column('S:S', None, date)
     worksheetCADTH.set_column('T:T', None, date)
     worksheetCADTH.set_column('U:U', None, date)
+    worksheetCADTH.set_column('V:V', None, date)
     worksheetCADTH.set_column('W:W', None, date)
     worksheetCADTH.set_column('X:X', None, date)
     worksheetCADTH.set_column('Y:Y', None, date)
@@ -56,67 +58,70 @@ def run_scraper():
 
     # CADTH - Builds and writes data to excel
     trs = table_cadth.find_all("tr")
-    #trs = trs[:30]
+    #trs = trs[:10]
     f.excel_writer(cf.getExcelRow_cadth, worksheetCADTH, trs)
-
+    print(wb.sheetnames)
     # Close csv file
     wb.close()
 
-def run():
-    run_scraper()
+def override_excel():
+    global workbook
 
-    # file and sheets to copy
-    source_wb = xw.books.open(r''+cf.OUTPUT_FILE)
+    # File and sheets to copy
+    source_wb = xw.books.open(r''+f.getAbsolutePath(cf.OUTPUT_FILE_TMP))
 
-    # copy needed source_sheets to the current sheets
+    # Copy needed source_sheets to the current sheets
     f.deleteSheet(workbook, 'CADTH')
     f.deleteSheet(workbook, 'pCPA')
-
-    sht1 = source_wb.sheets["CADTH"]
-    sht2 = source_wb.sheets["pCPA"]
-    print(source_wb.sheets)
     
     workbook.sheets.add("Temp", after=1)
-    print(workbook.sheets)
-    sht1.api.Copy(Before=workbook.sheets['Temp'].api)
 
-    #source_wb.sheets['CADTH'].api.Copy(Before=workbook.sheets[1].api)
-    #source_wb.sheets['pCPA'].api.Copy(Before=workbook.sheets[1].api)
-    
-    
+    source_wb.sheets['CADTH'].api.Copy(Before=workbook.sheets['Temp'].api)
+    source_wb.sheets['pCPA'].api.Copy(Before=workbook.sheets['Temp'].api)
 
-    source_wb.close()
     workbook.save()
-    #os.remove(getAbsolutePath(OUTPUT_FILE_TMP))
+
+    f.deleteSheet(workbook, 'Temp')
+    workbook.save()
+    
+    source_wb.close()
+
+    # Remove tmp file
+    f.os.remove(f.getAbsolutePath(cf.OUTPUT_FILE_TMP))
 
 def run_from_exe():
     global workbook
-    # Open or create a workbook.
     
-    #app = xw.App(visible=True)
+    # Initialize Excel instance
+    app = xw.App(visible=False)
 
-    #try:
-        #workbook = app.books(getAbsolutePath(OUTPUT_FILE))
-    #except:
-        #print("gola")
-        #workbook_create = xlsxwriter.Workbook(r''+getAbsolutePath(OUTPUT_FILE), {'constant_memory': True})
-        #workbook_create.add_worksheet('sheet1')
-        #workbook_create.add_worksheet('CADTH')
-        #workbook_create.add_worksheet('pCPA')
-        #workbook_create.close()
-        #workbook = app.books(r''+getAbsolutePath(OUTPUT_FILE))
-    #workbook.save()
+    # Open or create a workbook
+    try:
+        workbook = app.books.open(f.getAbsolutePath(cf.OUTPUT_FILE))
+    except:
+        workbook_create = xlsxwriter.Workbook(f.getAbsolutePath(cf.OUTPUT_FILE), {'constant_memory': True})
+        workbook_create.add_worksheet('sheet1')
+        workbook_create.add_worksheet('CADTH')
+        workbook_create.add_worksheet('pCPA')
+        workbook_create.close()
+        workbook = app.books.open(r''+f.getAbsolutePath(cf.OUTPUT_FILE))
+
+    # Start process
     run_scraper()
+    override_excel()
 
-    #workbook.close()
-    #app.quit()
+    workbook.close()
+    app.quit()
 
 def run_from_xlsb():
     global workbook
 
     # Current workbook and sheets
     workbook = xw.Book.caller()
-    run()
+
+    # Start process
+    run_scraper()
+    override_excel()
 
 if __name__ == "__main__":
     run_from_exe()

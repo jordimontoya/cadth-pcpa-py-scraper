@@ -1,6 +1,8 @@
 import utils.funcs as f
+from datetime import datetime
 
-OUTPUT_FILE = "output/CADTH-pCPA-data-import.xlsx"
+OUTPUT_FILE = "../output/CADTH-pCPA-data-import.xlsx"
+OUTPUT_FILE_TMP = "../output/CADTH-pCPA-data-import-tmp.xlsx"
 BASE_URL_CADTH = "https://www.cadth.ca"
 PATH_CADTH = "/reimbursement-review-reports"
 TABLE_CLASS_CADTH = "reimbursement_review"
@@ -12,10 +14,20 @@ PATH_PCPA = "/negotiations"
 TABLE_CLASS_PCPA = "datatable"
 THEAD_PRODUCT_PCPA = ["pCPA File Number","Sponsor/Manufacturer","CADTH Project Number","pCPA Engagement Letter Issued","Negotiation Process Concluded"]
 
+def dateParser_cadth(str):
+    if str and str != 'N/A':
+        return datetime.strptime(str, '%B %d, %Y')
+    return str
+
+def dateParser_pcpa(str):
+    if str and str != 'Not Applicable':
+        return datetime.strptime(str, '%Y-%m-%d')
+    return str
+
 # CADTH - Parse product table
 def parseProductTable(element, product_tr_list):
-    if product_tr_list.find("th", string=element):
-        product_td = product_tr_list.find("th", string=element).find_next_sibling("td").get_text(separator=" ").strip()
+    if product_tr_list.find("th", text=lambda t: t and element in t):
+        product_td = product_tr_list.find("th", text=lambda t: t and element in t).find_next_sibling("td").get_text(separator=" ").strip()
         product_td = product_td.replace('\n', ' ').replace('\r', '')
         return product_td
 
@@ -70,15 +82,17 @@ def getExcelRow_cadth(tr):
     excel_row = table_row + product_row
 
     # Parse dates
-    excel_row[5] = f.dateParser_cadth(excel_row[5])
-    excel_row[6] = f.dateParser_cadth(excel_row[6])
-    excel_row[12] = f.dateParser_cadth(excel_row[12])
-    excel_row[15] = f.dateParser_cadth(excel_row[15])
-    excel_row[19] = f.dateParser_cadth(excel_row[19])
-    excel_row[20] = f.dateParser_cadth(excel_row[20])
-    excel_row[22] = f.dateParser_cadth(excel_row[22])
-    excel_row[23] = f.dateParser_cadth(excel_row[23])
-    excel_row[24] = f.dateParser_cadth(excel_row[24])
+    excel_row[5] = dateParser_cadth(excel_row[5])
+    excel_row[6] = dateParser_cadth(excel_row[6])
+    excel_row[12] = dateParser_cadth(excel_row[12])
+    excel_row[15] = dateParser_cadth(excel_row[15])
+    excel_row[18] = dateParser_cadth(excel_row[18])
+    excel_row[19] = dateParser_cadth(excel_row[19])
+    excel_row[20] = dateParser_cadth(excel_row[20])
+    excel_row[21] = dateParser_cadth(excel_row[21])
+    excel_row[22] = dateParser_cadth(excel_row[22])
+    excel_row[23] = dateParser_cadth(excel_row[23])
+    excel_row[24] = dateParser_cadth(excel_row[24])
 
     return excel_row
 
@@ -107,7 +121,7 @@ def getExcelRow_pcpa(tr):
     excel_row = table_row + product_row
 
     # Parse dates
-    excel_row[7] = f.dateParser_pcpa(excel_row[7])
-    excel_row[8] = f.dateParser_pcpa(excel_row[8])
+    excel_row[7] = dateParser_pcpa(excel_row[7])
+    excel_row[8] = dateParser_pcpa(excel_row[8])
 
     return excel_row

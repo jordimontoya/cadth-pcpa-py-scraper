@@ -1,7 +1,6 @@
 import os
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
 from multiprocessing.dummy import Pool  # This is a thread-based Pool
 from multiprocessing import cpu_count
 
@@ -17,16 +16,6 @@ def scrapBaseUrl(url):
     r.raw.chunked = True
     r.encoding = 'utf-8'
     return BeautifulSoup(r.text, 'lxml')
-
-def dateParser_cadth(str):
-    if str and str != 'N/A':
-        return datetime.strptime(str, '%B %d, %Y')
-    return str
-
-def dateParser_pcpa(str):
-    if str and str != 'Not Applicable':
-        return datetime.strptime(str, '%Y-%m-%d')
-    return str
 
 def deleteSheet(wb, sheet_name):
     for sheet in wb.sheets:
