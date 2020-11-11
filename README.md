@@ -1,5 +1,7 @@
 # catdh-pcpa-py-scraper
 
+By: [Codekubik](http://www.codekubik.com)
+
 ## Before execution
 > Very important: Close entirely excel file "CADTH-pCPA-data-import.xlsx"! Otherwise the app will be unable to open the file.
 
