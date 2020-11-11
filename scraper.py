@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import xlsxwriter
 import xlwings as xw
 import utils.funcs as f
@@ -30,7 +31,7 @@ def run_scraper():
 
     # PCPA - Builds and writes data to excel
     trs = table_pcpa.find('tbody').find_all("tr")
-    trs = trs[:10]
+    #trs = trs[:10]
     f.excel_writer(cf.getExcelRow_pcpa, worksheetPCPA, trs)
     
     # CADTH - Create worksheet and set link format and date format
@@ -60,7 +61,7 @@ def run_scraper():
 
     # CADTH - Builds and writes data to excel
     trs = table_cadth.find_all("tr")
-    trs = trs[:10]
+    #trs = trs[:10]
     f.excel_writer(cf.getExcelRow_cadth, worksheetCADTH, trs)
 
     # Close csv file
@@ -76,6 +77,8 @@ def override_sheet(name, range):
 
 def run_from_exe():
     global workbook
+
+    print('Running mode: run_from_exe')
 
     # Start process
     run_scraper()
@@ -102,19 +105,26 @@ def run_from_exe():
     workbook.close()
     app.quit()
 
+    print('Scraper executed successfully! END')
+
 def run_from_xlsb():
     global workbook
+
+    print('Running mode: run_from_xlsb... START')
 
     # Current workbook and sheets
     workbook = xw.Book.caller()
 
-    # Start process
+    print('Scraping website... START')
     run_scraper()
+    print('Scraping website... END')
+
+    print('Copying data and removing temp files... START')
     override_sheet('CADTH', 'A1:AZ5000')
     override_sheet('pCPA', 'A1:AZ5000')
-
     # Remove tmp file
     f.os.remove(f.getAbsolutePath(cf.OUTPUT_FILE_TMP))
+    print('Copying data and removing temp files... END')
 
 if __name__ == "__main__":
     run_from_exe()

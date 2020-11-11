@@ -1,8 +1,8 @@
 import utils.funcs as f
 from datetime import datetime
 
-OUTPUT_FILE = "../output/CADTH-pCPA-data-import.xlsx"
-OUTPUT_FILE_TMP = "../output/CADTH-pCPA-data-import-tmp.xlsx"
+OUTPUT_FILE = "CADTH-pCPA-data-import.xlsx"
+OUTPUT_FILE_TMP = "CADTH-pCPA-data-import-tmp.xlsx"
 BASE_URL_CADTH = "https://www.cadth.ca"
 PATH_CADTH = "/reimbursement-review-reports"
 TABLE_CLASS_CADTH = "reimbursement_review"
