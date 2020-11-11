@@ -40,13 +40,15 @@ def run_scraper():
     worksheetCADTH.set_column('G:G', None, date)
     worksheetCADTH.set_column('M:M', None, date)
     worksheetCADTH.set_column('P:P', None, date)
-    worksheetCADTH.set_column('S:S', None, date)
-    worksheetCADTH.set_column('T:T', None, date)
+    worksheetCADTH.set_column('Q:Q', None, date)
+    worksheetCADTH.set_column('R:R', None, date)
     worksheetCADTH.set_column('U:U', None, date)
     worksheetCADTH.set_column('V:V', None, date)
     worksheetCADTH.set_column('W:W', None, date)
     worksheetCADTH.set_column('X:X', None, date)
     worksheetCADTH.set_column('Y:Y', None, date)
+    worksheetCADTH.set_column('Z:Z', None, date)
+    worksheetCADTH.set_column('AA:AA', None, date)
 
     # CADTH - Scraps table
     soup = f.scrapBaseUrl(cf.BASE_URL_CADTH + cf.PATH_CADTH)
