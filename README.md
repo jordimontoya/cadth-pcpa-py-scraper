@@ -1,7 +1,7 @@
 # catdh-pcpa-py-scraper
 
 ## Before execution:
-- Very important: Close entirely excel file "CADTH-pCPA-data-import.xlsx" !!
+> Very important: Close entirely excel file "CADTH-pCPA-data-import.xlsx" !!
 
 ## What you need to know:
 - Expected execution time: 1:30 - 2 minutes.
