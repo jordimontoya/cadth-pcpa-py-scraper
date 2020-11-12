@@ -15,21 +15,23 @@ By: [Codekubik](http://www.codekubik.com)
 ## Guidelines
 
 ###### Execute scraper.exe
-1. Close excel file *CADTH-pCPA-data-import.xlsx*
-1. Double click on `scraper.exe`
-2. A cmd command will pop. Wait and do nothing until it disapears.
-3. Once cmd command closed, excel *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
+1. Download file `scraper.exe`
+2. Close excel file *CADTH-pCPA-data-import.xlsx*
+3. Double click on `scraper.exe`
+4. A cmd command will pop. Wait and do nothing until it disapears.
+5. Once cmd command closed, excel *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
 
 ###### Execute from IDE or Command line (only for development purposes)
 
 1. Download and install [Python 3.9](https://www.python.org/downloads/release/python-390/) and `PIP`
 2. Add python to system env variables
-3. Open cmd and execute pip install to import below libraries:
-  - `pip install xlsxwriter`
-  - `pip install xlwings`
-  - `pip install beautifulsoup4`
-  - `pip install multiprocess`
-  - `pip install DateTime`
-4. Close excel file *CADTH-pCPA-data-import.xlsx*
-5. Open cmd --> go to python directory --> execute command `python scraper.py`
-6. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
+3. Download code source `cadth-pcpa-py-scraper`
+4. Open cmd and execute pip install to import below libraries:
+    - `pip install xlsxwriter`
+    - `pip install xlwings`
+    - `pip install beautifulsoup4`
+    - `pip install multiprocess`
+    - `pip install DateTime`
+5. Close excel file *CADTH-pCPA-data-import.xlsx*
+6. Open cmd --> go to python directory --> execute command `python scraper.py`
+7. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
