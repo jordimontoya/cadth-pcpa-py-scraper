@@ -16,11 +16,11 @@ By: [Codekubik](http://www.codekubik.com)
 
 
 ## Guidelines
-
-#### Execute scraper.exe
 > **Very important:** Before every execution, close entirely excel file *CADTH-pCPA-data-import.xlsx*. Otherwise the app will be unable to open the file.
 
 > Killing the execution before it ends may cause the excel file still open on the background. Just kill Excel process on Task Manager
+
+#### Execute scraper.exe
 
 1. Download executable file by clicking on `scraper.exe` and then `Download` button
 2. If this is the first execution, right click and scan `scraper.exe` with your antivirus. Executable files coming from Internet are intercepted by all antivirus.
