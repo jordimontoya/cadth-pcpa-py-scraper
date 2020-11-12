@@ -26,16 +26,6 @@ def getAbsolutePath(relative_path):
 
     return os.path.join(application_path, relative_path)
 
-
-
-    #base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-    #return os.path.join(base_path, relative_path)
-    #return Path(os.path.dirname(sys.argv[0]),relative_path)
-    #script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-    #abs_path = os.path.join(script_dir, relative_path)
-    #os.makedirs(os.path.dirname(abs_path), exist_ok=True)
-    #return os.path.abspath(abs_path)
-
 def scrapBaseUrl(url):
     headers = {"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"}
     r = requests.get(url, headers=headers)

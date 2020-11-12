@@ -77,6 +77,10 @@ def override_sheet(name, range):
 
     print('Copying data to excel file... START')
 
+    sNamList = [sh.name for sh in workbook.sheets]
+    if name not in sNamList:
+        workbook.sheets.add(name)
+
     source_wb = xw.books.open(f.getAbsolutePath(cf.OUTPUT_FILE_TMP))
     source_wb.sheets[name].range(range).copy(workbook.sheets[name].range(range))
     workbook.save()
