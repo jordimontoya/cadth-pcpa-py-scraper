@@ -28,7 +28,7 @@ Datasources are:
 #### Execute scraper.exe
 
 1. Download executable file by clicking on `scraper.exe` and then `Download` button
-2. If this is the first execution, right click and scan `scraper.exe` with your antivirus. Executable files coming from Internet are intercepted by all antivirus.
+2. On first execution, right click and scan `scraper.exe` with your antivirus. Executable files coming from Internet are intercepted by all antivirus.
 3. Double click on `scraper.exe`
 4. A cmd command will pop. Wait and do nothing until it disapears.
 5. Once cmd command closed, excel *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
