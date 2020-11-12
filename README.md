@@ -15,7 +15,7 @@ By: [Codekubik](http://www.codekubik.com)
 ## Guidelines
 
 ###### Execute scraper.exe
-1. Download file `scraper.exe`
+1. Download executable file by clicking on `scraper.exe` and then `Download` button
 2. Close excel file *CADTH-pCPA-data-import.xlsx*
 3. Double click on `scraper.exe`
 4. A cmd command will pop. Wait and do nothing until it disapears.
