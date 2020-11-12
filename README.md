@@ -3,20 +3,20 @@
 By: [Codekubik](http://www.codekubik.com)
 
 ## Introduction
-This python script pulls data from 2 different websites and creates/overrides an 2 Excel worksheets with the results.
+This python script pulls data from 2 different websites and creates/overwrites an 2 Excel worksheets with the results.
 `scraper.exe` bundles the python scripts into one single stand-alone executable under Windows, Mac OS X and GNU/Linux.
 
 Datasources are:
-- The *CADTH* sheet contains the data extracted from the [Canadian Reimbursement Review Reports datatable](https://www.cadth.ca/reimbursement-review-reports) among all product details for each record.
-- The *pCPA* sheet contains the data extracted from the [Pan-Canadian Pharmaceutical alliance](https://www.pcpacanada.ca/negotiations) among all product details for each record.
+- The *CADTH* sheet contains the data extracted from the [Canadian Reimbursement Review Reports datatable](https://www.cadth.ca/reimbursement-review-reports) along with all product details for each record.
+- The *pCPA* sheet contains the data extracted from the [Pan-Canadian Pharmaceutical alliance](https://www.pcpacanada.ca/negotiations) along with all product details for each record.
 
 
 ## What you need to know
 
-- Expected execution time: between 1:30 - 2 minutes.
-- Output excel file will be created next to `scraper.exe`
-- Output excel file will be always called *CADTH-pCPA-data-import.xlsx*
-- If file *CADTH-pCPA-data-import.xlsx* already exists, worksheets *CADTH* and *pCPA* will be overriden. Formulas, datatables and Pivot tables in other sheets inside this workbook will continue working after scraper execution.
+- Expected execution time: between 1:30 minutes.
+- Excel file will be created next to `scraper.exe`
+- Excel file will be always called *CADTH-pCPA-data-import.xlsx*
+- If Excel file *CADTH-pCPA-data-import.xlsx* already exists, worksheets *CADTH* and *pCPA* will be overwritten. Formulas, datatables and Pivot tables in other sheets inside this workbook will continue working after scraper execution.
 - If *CADTH-pCPA-data-import.xlsx* file does not exists, workbook and worksheets *CADTH* and *pCPA* will be created from scratch.
 
 
