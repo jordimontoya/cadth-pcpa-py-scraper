@@ -4,8 +4,7 @@ By: [Codekubik](http://www.codekubik.com)
 
 ## Introduction
 This python script pulls data from 2 different websites and creates/overrides an 2 Excel worksheets with the results.
-
-`scraper.exe` bundles the python scripts into one single stand-alone executable under Windows, GNU/Linux, Mac OS X, FreeBSD, Solaris and AIX.
+`scraper.exe` bundles the python scripts into one single stand-alone executable under Windows, Mac OS X and GNU/Linux.
 
 Datasources are:
 - The *CADTH* sheet contains the data extracted from the [Canadian Reimbursement Review Reports datatable](https://www.cadth.ca/reimbursement-review-reports) among all product details for each record.
