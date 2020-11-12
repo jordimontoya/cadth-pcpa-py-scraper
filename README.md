@@ -15,16 +15,13 @@ By: [Codekubik](http://www.codekubik.com)
 - If *CADTH-pCPA-data-import.xlsx* file does not exists, workbook and worksheets *CADTH* and *pCPA* will be created from scratch.
 
 
-## Before execution
-
-> **Very important:** Close entirely excel file *CADTH-pCPA-data-import.xlsx*! Otherwise the app will be unable to open the file.
-
 ## Guidelines
 
 #### Execute scraper.exe
+> **Very important:** Before every execution, close entirely excel file *CADTH-pCPA-data-import.xlsx*. Otherwise the app will be unable to open the file.
 
 1. Download executable file by clicking on `scraper.exe` and then `Download` button
-2. Close excel file *CADTH-pCPA-data-import.xlsx*
+2. If this is the first execution, right click and scan `scraper.exe` with your antivirus. Executable files coming from Internet are intercepted by all antivirus.
 3. Double click on `scraper.exe`
 4. A cmd command will pop. Wait and do nothing until it disapears.
 5. Once cmd command closed, excel *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
@@ -40,6 +37,5 @@ By: [Codekubik](http://www.codekubik.com)
     - `pip install beautifulsoup4`
     - `pip install multiprocess`
     - `pip install DateTime`
-5. Close excel file *CADTH-pCPA-data-import.xlsx*
-6. Open cmd --> go to python directory --> execute command `python scraper.py`
-7. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
+5. Open cmd --> go to python directory --> execute command `python scraper.py`
+6. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
