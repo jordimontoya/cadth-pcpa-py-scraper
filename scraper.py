@@ -9,6 +9,9 @@ workbook = None
 app = None
 
 def run_scraper():
+
+    print('Scraping website... START')
+
     # Create a workbook and declare specific formats.
     wb = xlsxwriter.Workbook(f.getAbsolutePath(cf.OUTPUT_FILE_TMP), {'constant_memory': True})
     bold = wb.add_format({'bold': True})
@@ -67,13 +70,19 @@ def run_scraper():
     # Close csv file
     wb.close()
 
+    print('Scraping website... END')
+
 def override_sheet(name, range):
     global workbook
+
+    print('Copying data to excel file... START')
 
     source_wb = xw.books.open(f.getAbsolutePath(cf.OUTPUT_FILE_TMP))
     source_wb.sheets[name].range(range).copy(workbook.sheets[name].range(range))
     workbook.save()
     source_wb.close()
+
+    print('Copying data to excel file... END')
 
 def run_from_exe():
     global workbook
@@ -114,17 +123,15 @@ def run_from_xlsb():
 
     # Current workbook and sheets
     workbook = xw.Book.caller()
-
-    print('Scraping website... START')
+    
     run_scraper()
-    print('Scraping website... END')
 
-    print('Copying data and removing temp files... START')
     override_sheet('CADTH', 'A1:AZ5000')
     override_sheet('pCPA', 'A1:AZ5000')
     # Remove tmp file
     f.os.remove(f.getAbsolutePath(cf.OUTPUT_FILE_TMP))
-    print('Copying data and removing temp files... END')
+
+    print('Scraper executed successfully! END')
 
 if __name__ == "__main__":
     run_from_exe()
