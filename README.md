@@ -16,14 +16,14 @@ By: [Codekubik](http://www.codekubik.com)
 
 ## Guidelines
 
-### Execute scraper.exe
+#### Execute scraper.exe
 1. Download executable file by clicking on `scraper.exe` and then `Download` button
 2. Close excel file *CADTH-pCPA-data-import.xlsx*
 3. Double click on `scraper.exe`
 4. A cmd command will pop. Wait and do nothing until it disapears.
 5. Once cmd command closed, excel *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
 
-### Execute from IDE or Command line (only for development purposes)
+#### Execute from IDE or Command line (only for development purposes)
 
 1. Download and install [Python 3.9](https://www.python.org/downloads/release/python-390/) and `PIP`
 2. Add python to system env variables
