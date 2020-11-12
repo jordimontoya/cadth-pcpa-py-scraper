@@ -23,7 +23,7 @@ Datasources are:
 ## Guidelines
 > **Very important:** Before every execution, close entirely excel file *CADTH-pCPA-data-import.xlsx*. Otherwise the app will be unable to open the file.
 
-> Killing the execution before it ends may cause the excel file still open on the background. Just kill Excel process on Task Manager
+> Killing the execution before it ends may cause the excel file still open on the background. Just kill Microsoft Excel process on Windows Task Manager
 
 #### Execute scraper.exe
 
