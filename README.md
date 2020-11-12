@@ -12,7 +12,7 @@ By: [Codekubik](http://www.codekubik.com)
 - If *CADTH-pCPA-data-import.xlsx* file does not exists, workbook and worksheets *CADTH* and *pCPA* will be created from scratch.
 
 ## Before execution
-> _Very important:_ Close entirely excel file *CADTH-pCPA-data-import.xlsx*! Otherwise the app will be unable to open the file.
+> **Very important:** Close entirely excel file *CADTH-pCPA-data-import.xlsx*! Otherwise the app will be unable to open the file.
 
 ## Guidelines
 
