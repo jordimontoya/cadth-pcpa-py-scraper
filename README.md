@@ -20,8 +20,7 @@ By: [Codekubik](http://www.codekubik.com)
 2. A cmd command will pop. Wait and do nothing until it disapears.
 3. Once cmd command closed, excel file "CADTH-pCPA-data-import.xlsx" ready to be used. Double check excel's last modification datetime.
 
-###### Execute from IDE or Command line 
-> only for development purposes
+###### Execute from IDE or Command line (only for development purposes)
 
 1. Download and install [Python 3.9](https://www.python.org/downloads/release/python-390/) and `PIP`
 2. Add python to system env variables
