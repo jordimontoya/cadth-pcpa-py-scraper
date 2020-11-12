@@ -13,7 +13,23 @@ By: [Codekubik](http://www.codekubik.com)
 - If "CADTH-pCPA-data-import.xlsx" file does not exists, workbook and worksheets "CADTH" and "pCPA" will be created from scratch.
 
 ## Guidelines
+
+###### Execute scraper.exe
 1. Close excel file "CADTH-pCPA-data-import.xlsx"
 1. Double click on `scraper.exe`
 2. A cmd command will pop. Wait and do nothing until it disapears.
-3. Once cmd command closed, excel file "CADTH-pCPA-data-import.xlsx" ready to be used. Double check last modification datetime of the excel file.
+3. Once cmd command closed, excel file "CADTH-pCPA-data-import.xlsx" ready to be used. Double check excel's last modification datetime.
+
+###### Execute from IDE or Command line
+
+1. Download and install [Python 3.9](https://www.python.org/downloads/release/python-390/) and `PIP`
+2. Add python to system env variables
+3. open cmd and execute pip install to import below libraries:
+  - `pip install xlsxwriter`
+  - `pip install xlwings`
+  - `pip install beautifulsoup4`
+  - `pip install multiprocess`
+  - `pip install DateTime`
+3. Close excel file "CADTH-pCPA-data-import.xlsx"
+4. Open cmd --> go to python directory --> execute command `python scraper.py`
+5. Once script execution finished, excel file "CADTH-pCPA-data-import.xlsx" is ready to be used. Double check excel's last modification datetime.
