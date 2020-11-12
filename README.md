@@ -7,8 +7,8 @@ This python script pulls data from 2 different websites and creates/overrides an
 `scraper.exe` will do the job.
 
 Datasources are:
-    - The *CADTH* sheet contains the data extracted from the [Canadian Reimbursement Review Reports datatable](https://www.cadth.ca/reimbursement-review-reports) among all product details for each record.
-    - The *pCPA* sheet contains the data extracted from the [Pan-Canadian Pharmaceutical alliance](https://www.pcpacanada.ca/negotiations) among all product details for each record.
+- The *CADTH* sheet contains the data extracted from the [Canadian Reimbursement Review Reports datatable](https://www.cadth.ca/reimbursement-review-reports) among all product details for each record.
+- The *pCPA* sheet contains the data extracted from the [Pan-Canadian Pharmaceutical alliance](https://www.pcpacanada.ca/negotiations) among all product details for each record.
 
 
 ## What you need to know
