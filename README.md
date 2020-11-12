@@ -30,6 +30,6 @@ By: [Codekubik](http://www.codekubik.com)
   - `pip install beautifulsoup4`
   - `pip install multiprocess`
   - `pip install DateTime`
-3. Close excel file *CADTH-pCPA-data-import.xlsx*
-4. Open cmd --> go to python directory --> execute command `python scraper.py`
-5. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
+4. Close excel file *CADTH-pCPA-data-import.xlsx*
+5. Open cmd --> go to python directory --> execute command `python scraper.py`
+6. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
