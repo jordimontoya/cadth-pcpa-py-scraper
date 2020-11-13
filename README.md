@@ -31,7 +31,7 @@ Datasources and outputs:
 2. On first execution, right click and scan `scraper.exe` with your antivirus. Executable files coming from Internet are intercepted by all antivirus. Once scanned, the antivirus will let you execute the file as many times as you want.
 3. Double click on `scraper.exe`
 4. A cmd command will pop. Wait and do nothing until it disapears.
-5. Once cmd command closed, excel *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
+5. Once cmd command closed, excel *CADTH-pCPA-data-import.xlsx* is ready to use. Double check excel's last modification datetime.
 
 #### Execute from IDE or Command line (only for development purposes)
 
@@ -45,4 +45,4 @@ Datasources and outputs:
     - `pip install multiprocess`
     - `pip install DateTime`
 5. Open cmd --> go to python directory --> execute command `python scraper.py`
-6. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to be used. Double check excel's last modification datetime.
+6. Once script execution ends, excel file *CADTH-pCPA-data-import.xlsx* is ready to use. Double check excel's last modification datetime.
