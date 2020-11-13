@@ -6,7 +6,7 @@ By: [Codekubik](http://www.codekubik.com)
 This python script pulls data from 2 different websites and creates/overwrites 2 Excel worksheets with the results.
 `scraper.exe` bundles the python scripts into one single stand-alone executable under Windows, Mac OS X and GNU/Linux.
 
-Datasources are:
+Datasources and outputs:
 - The *CADTH* sheet contains the data extracted from the [Canadian Reimbursement Review Reports datatable](https://www.cadth.ca/reimbursement-review-reports) along with all product details for each record.
 - The *pCPA* sheet contains the data extracted from the [Pan-Canadian Pharmaceutical alliance](https://www.pcpacanada.ca/negotiations) along with all product details for each record.
 
