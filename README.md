@@ -3,7 +3,7 @@
 By: [Codekubik](http://www.codekubik.com)
 
 ## Introduction
-This python script pulls data from 2 different websites and creates/overwrites an 2 Excel worksheets with the results.
+This python script pulls data from 2 different websites and creates/overwrites 2 Excel worksheets with the results.
 `scraper.exe` bundles the python scripts into one single stand-alone executable under Windows, Mac OS X and GNU/Linux.
 
 Datasources are:
