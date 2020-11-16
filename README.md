@@ -16,7 +16,7 @@ Datasources and outputs:
 - Expected execution time: between 1:30 minutes.
 - Excel file will be created next to `scraper.exe`
 - Excel file will be always called *CADTH-pCPA-data-import.xlsx*
-- If Excel file *CADTH-pCPA-data-import.xlsx* already exists, worksheets *CADTH* and *pCPA* will be overwritten. Formulas, datatables and Pivot tables in other sheets inside this workbook will continue working after scraper execution.
+- If Excel's file CADTH-pCPA-data-import.xlsx already exists, worksheets CADTH and pCPA will be overwritten. Formulas, datatables and Pivot tables in other sheets inside this workbook will continue working after scraper execution so you can reuse the same Excel's workbook every time.
 - If *CADTH-pCPA-data-import.xlsx* file does not exists, workbook and worksheets *CADTH* and *pCPA* will be created from scratch.
 
 
