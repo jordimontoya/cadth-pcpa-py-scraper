@@ -3,7 +3,6 @@ import xlsxwriter
 import xlwings as xw
 import utils.funcs as f
 import utils.custom_funcs as cf
-import cProfile
 
 workbook = None
 app = None
@@ -42,29 +41,38 @@ def run_scraper():
     worksheetCADTH.set_column('A:A', None, underline)
     worksheetCADTH.set_column('F:F', None, date)
     worksheetCADTH.set_column('G:G', None, date)
-    worksheetCADTH.set_column('M:M', None, date)
-    worksheetCADTH.set_column('P:P', None, date)
+    worksheetCADTH.set_column('N:N', None, date)
     worksheetCADTH.set_column('Q:Q', None, date)
     worksheetCADTH.set_column('R:R', None, date)
-    worksheetCADTH.set_column('U:U', None, date)
+    worksheetCADTH.set_column('S:S', None, date)
     worksheetCADTH.set_column('V:V', None, date)
     worksheetCADTH.set_column('W:W', None, date)
     worksheetCADTH.set_column('X:X', None, date)
     worksheetCADTH.set_column('Y:Y', None, date)
     worksheetCADTH.set_column('Z:Z', None, date)
     worksheetCADTH.set_column('AA:AA', None, date)
+    worksheetCADTH.set_column('AB:AB', None, date)
 
     # CADTH - Scraps table
-    soup = f.scrapBaseUrl(cf.BASE_URL_CADTH + cf.PATH_CADTH)
-    table_cadth = soup.find("table", class_=cf.TABLE_CLASS_CADTH)
+    # last page = "items_per_page=50&page=25", take into account that there are empty rows
+
+    trs = []
+    page = 1
+    while True:
+        soup = f.scrapBaseUrl(cf.BASE_URL_CADTH + cf.PATH_CADTH.format(page))
+        
+        if not soup.find("table", class_=cf.TABLE_CLASS_CADTH):
+            break
+
+        table_cadth = soup.find("table", class_=cf.TABLE_CLASS_CADTH)
+        trs = trs + table_cadth.find("tbody").find_all("tr")
+        page += 1
 
     # CADTH - Builds and writes excel's head
     excel_head = f.getExcelHead(table_cadth, cf.THEAD_PRODUCT_CADTH)
     worksheetCADTH.write_row(0, 0, excel_head, bold)
 
     # CADTH - Builds and writes data to excel
-    trs = table_cadth.find_all("tr")
-    #trs = trs[:10]
     f.excel_writer(cf.getExcelRow_cadth, worksheetCADTH, trs)
 
     # Close csv file
