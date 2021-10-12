@@ -57,7 +57,7 @@ def run_scraper():
     # last page = "items_per_page=50&page=25", take into account that there are empty rows
 
     trs = []
-    page = 1
+    page = 0
     while True:
         soup = f.scrapBaseUrl(cf.BASE_URL_CADTH + cf.PATH_CADTH.format(page))
         
