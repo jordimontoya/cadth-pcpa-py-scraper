@@ -21,7 +21,7 @@ def getAbsolutePath(relative_path):
     config_full_path = os.path.join(application_path, relative_path)
 
     print('Running mode:', running_mode)
-    print('  Appliction path  :', application_path)
+    print('  Application path  :', application_path)
     print('  Config full path :', config_full_path)
 
     return os.path.join(application_path, relative_path)

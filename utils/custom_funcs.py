@@ -33,9 +33,11 @@ def parseProductTable(element, product_content):
     if product_content.find("strong", text=lambda t: t and element in t):
         product_td = product_content.find("strong", text=lambda t: t and element in t)
         product_td = product_td.parent
-        product_td = product_td.find_next_sibling("div").get_text(separator=" ").strip()
-        product_td = product_td.replace('\n', ' ').replace('\r', '')
-        return product_td
+        
+        if product_td.find_next_sibling("div"):
+            product_td = product_td.find_next_sibling("div").get_text(separator=" ").strip()
+            product_td = product_td.replace('\n', ' ').replace('\r', '')
+            return product_td
 
     return ""
 
