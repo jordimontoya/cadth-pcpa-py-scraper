@@ -121,13 +121,26 @@ def getExcelRow_cadth(tr):
 
 # CADTH - Returns the detail row as a string
 def getProductDetail_pcpa(soup):
-    product_row = []
-    product_row.append(soup.find("span", class_="views-label-nid").find_next_sibling("span").get_text(separator=" ").strip())
-    product_row.append(soup.find("span", class_="views-label-field-manufacturer-name").find_next_sibling("div").get_text(separator=" ").strip())
-    product_row.append(soup.find("span", class_="views-label-field-cadth-project-id").find_next_sibling("div").get_text(separator=" ").strip())
-    product_row.append(soup.find("span", class_="views-label-field-engagement-date").find_next_sibling("div").get_text(separator=" ").strip())
-    product_row.append(soup.find("span", class_="views-label-field-close-date").find_next_sibling("div").get_text(separator=" ").strip())
-    
+    def get_text_or_empty(soup_object):
+        return soup_object.get_text(separator=" ").strip() if soup_object else ""
+
+    page_not_found = get_text_or_empty(soup.find("h1", class_="title")) == "Page not found"
+
+    if page_not_found:
+        product_row = [""] * 5
+    else:
+        fields = [
+            ("span", "views-label-nid"),
+            ("span", "views-label-field-manufacturer-name"),
+            ("span", "views-label-field-cadth-project-id"),
+            ("span", "views-label-field-engagement-date"),
+            ("span", "views-label-field-close-date"),
+        ]
+        product_row = [
+            get_text_or_empty(soup.find(tag, class_=class_name).find_next_sibling("div" if tag == "span" else "span"))
+            for tag, class_name in fields
+        ]
+
     return product_row
 
 # CADTH - Returns excel row as a string
